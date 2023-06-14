@@ -45,13 +45,15 @@ const launch = (ctx) => {
       let chromePath = await DB.findOne({ name: "chromePath" });
       let _chromePath = path.normalize(chromePath?.value || '');
       console.log('chromePath: ', chromePath);
-      let chromeExtPath = path.normalize(Config.chromeExtDir);
-      console.log("chromeExtPath: ", chromeExtPath);
+      let chromeExtPath = path.join(__dirname,'../chrome-ext/kkExt')
+      let chromeExtPathRightClick = path.join(__dirname,'../chrome-ext/rightClick')
+
       const customArgs = [
         `--start-maximized`,
         `--disable-infobars`,
         "--no-default-browser-check",
-        `--load-extension=${chromeExtPath}`,
+        // `--load-extension=${chromeExtPath}`,
+        `--load-extension=${chromeExtPath},${chromeExtPathRightClick}`,
       ];
 
       let disconnected = false;

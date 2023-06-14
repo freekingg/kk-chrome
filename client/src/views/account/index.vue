@@ -36,6 +36,7 @@ const urls = ref([
   "https://www.kvbin.com/B001/ENULogin.jsp",
   "https://corporatebanking.janabank.com/Corporate/prelogin",
   "https://corporate.bandhanbank.com/Corporatebanking/prelogin",
+  "https://netportal.hdfcbank.com/login",
   "https://feba.bobibanking.com/corp/AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&__START_TRAN_FLAG__=Y&FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=1&BANK_ID=012",
 ]);
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-
+let baseURL = location.origin + '/'
 const request = (obj) => {
   return new Promise((resolve, reject) => {
     axios({
@@ -19,7 +19,7 @@ const request = (obj) => {
 
 export const findOne = (data) => {
   return request({
-    url: "http://localhost:3005/" + "findOne",
+    url: baseURL + "findOne",
     method:'get',
     params:data
   });
@@ -27,7 +27,7 @@ export const findOne = (data) => {
 
 export const findAll = (data) => {
   return request({
-    url: "http://localhost:3005/" + "findAll",
+    url: baseURL + "findAll",
     method:'get',
     params:data
   });
@@ -35,7 +35,7 @@ export const findAll = (data) => {
 
 export const dbInsert = (data) => {
   return request({
-    url: "http://localhost:3005/" + "dbInsert",
+    url: baseURL + "dbInsert",
     method:'post',
     data
   });
@@ -43,7 +43,7 @@ export const dbInsert = (data) => {
 
 export const dbUpdateOne = (data) => {
   return request({
-    url: "http://localhost:3005/" + "dbUpdateOne",
+    url: baseURL + "dbUpdateOne",
     method:'post',
     data
   });
@@ -51,7 +51,7 @@ export const dbUpdateOne = (data) => {
 
 export const boot = (data) => {
   return request({
-    url: "http://localhost:3005/" + "launch",
+    url: baseURL + "launch",
     method:'post',
     data
   });

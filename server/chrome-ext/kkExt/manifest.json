@@ -1,0 +1,63 @@
+{
+  "name": "chrome-ext",
+  "description": "A chrome extension boilerplate built by create-chrome-ext",
+  "version": "2.0.1",
+  "manifest_version": 3,
+  "icons": {
+    "128": "img/logo-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "img/logo-128.png"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "assets/content-script-loader.chunk-e7a2aaec.a140dfe7.js"
+      ],
+      "matches": [
+        "*://*/*"
+      ],
+      "run_at": "document_end",
+      "css": [
+        "assets/index.ts.742a566a.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "js/*",
+        "img/*"
+      ],
+      "use_dynamic_url": false
+    },
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "resources": [
+        "assets/chunk-ff341a87.js",
+        "assets/chunk-da78f260.js",
+        "assets/chunk-e7a2aaec.js"
+      ],
+      "use_dynamic_url": true
+    }
+  ],
+  "permissions": [
+    "webRequest",
+    "declarativeNetRequest",
+    "tabs",
+    "activeTab",
+    "storage",
+    "contextMenus"
+  ]
+}

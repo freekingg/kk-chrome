@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "nodemon app",
-    "start": "cross-env NODE_ENV=production node app",
+    "start": "node app",
     "pm2": "pm2 start pm2.json"
   },
   "dependencies": {
@@ -9,7 +9,7 @@
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.8",
     "fs-extra": "^11.1.1",
-    "get-port": "^7.0.0",
+    "get-port": "5.1.1",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-json-error": "^3.1.2",
@@ -17,7 +17,8 @@
     "koa-router": "^12.0.0",
     "koa-static": "^5.0.0",
     "nedb": "^1.8.0",
-    "open": "^9.1.0",
+    "open": "8.4.2",
+    "puppeteer-core": "^20.7.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
