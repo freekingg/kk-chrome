@@ -5,11 +5,13 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const UserPreferencesPlugin = require("puppeteer-extra-plugin-user-preferences");
 const DB = require("../db/index.js");
 const Config = require("../config");
+const Pnb = require("./utils/pnb.js")
 puppeteer.use(StealthPlugin());
 const launch = (ctx) => {
   const body = ctx.request.body;
+  console.log('body: ', body);
   let checkBrowserTimer = null;
-  const { uname, url } = body;
+  const { uname, url, bankType } = body;
   const websiteUrl = url;
 
   // 远程目录
@@ -80,6 +82,29 @@ const launch = (ctx) => {
         waitUntil: "networkidle2",
         timeout: 60000,
       });
+
+      // pnb
+      if(bankType === 24){
+        
+        try {
+          await Pnb.pnbHandle(page, body)
+          DB.insert({
+            name: "logInfo",
+            value: {
+              uname,
+              message: `${uname}-${body.userId} 登录成功`,
+            },
+          });
+        } catch (error) {
+          DB.insert({
+            name: "logInfo",
+            value: {
+              uname,
+              message: `${uname}-${body.userId} 登录失败 ${error.message},请检查手动登录`,
+            },
+          });
+        }
+      }
 
       // 检查浏览器是否关闭
       let newBrowser = browser;

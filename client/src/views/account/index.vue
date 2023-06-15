@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive,onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { Setting } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import SettingDialog from "./components/setting.vue";
@@ -42,21 +42,85 @@ const urls = ref([
 
 const accounts = () => {
   axios({
-    method:'get',
+    method: "get",
     url: baseUrl.value,
-  }).then((result) => {
-    console.log(result);
-    if(result.data){
-      tableData.value = result.data
-    }
-  }).catch((err) => {
-    
-  });
+  })
+    .then((result) => {
+      console.log(result);
+      if (result.data) {
+        tableData.value = result.data;
+      }
+    })
+    .catch((err) => {
+      console.log("err: ", err);
+      tableData.value = [
+        {
+          id: 1668887933801652225,
+          uname: "PNBTEST",
+          balance: 1191813.0,
+          type: 1,
+          accountType: 1,
+          mobile: "",
+          status: 1,
+          bankInfoId: 1668887934153973761,
+          bankInfoNo: "B72959",
+          bankType: 24,
+          bankDirection: 1,
+          bankAccount: "219998875",
+          bankPwd: "Fastpay000@",
+          bankData: "12",
+          bankInfoStatus: 3,
+          remark:
+            "https://internetbanking.pnbibanking.in/corp/AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&__START_TRAN_FLAG__=Y&__FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=1&BANK_ID=024",
+          createDate: "2023-06-14T07:47:45.000+0000",
+          upi: null,
+          bankGridValueList: null,
+          bankDataDTO: [
+            {
+              corporateId: "YATH8615",
+              userId: "NOYAL168",
+              password: "Fastpay999@",
+              account:"199110210000374",
+              type: "min",
+            },
+            {
+              corporateId: "YATH8615",
+              userId: "GOYAL171",
+              password: "Fastpay999@",
+              account:"199110210000374",
+              type: "all",
+            },
+          ],
+        },
+        {
+          id: 1540272016021434369,
+          uname: "axis333",
+          balance: 0.0,
+          type: 1,
+          accountType: 1,
+          mobile: "",
+          status: 1,
+          bankInfoId: 1540272016382144513,
+          bankInfoNo: "B0530",
+          bankType: 17,
+          bankDirection: 1,
+          bankAccount: "940027673",
+          bankPwd: "Fastpay888@",
+          bankData: "",
+          bankInfoStatus: 3,
+          remark:
+            "https://retail.axisbank.co.in/wps/portal/rBanking/axisebanking/AxisRetailLogin/!ut/p/a1/04_Sj9CPykssy0xPLMnMz0vMAfGjzOKNAzxMjIwNjLwsQp0MDBw9PUOd3HwdDQwMjIEKIoEKDHAARwNC-sP1o_ArMYIqwGNFQW6EQaajoiIAVNL82A!!/dl5/d5/L2dBISEvZ0FBIS9nQSEh/?_ga=2.236133576.857785597.1643885687-1954125547.1628502792",
+          createDate: "2022-06-24T09:54:00.000+0000",
+          upi: null,
+          bankGridValueList: null,
+        },
+      ];
+    });
 };
 
-onMounted(()=>{
-  accounts()
-})
+onMounted(() => {
+  accounts();
+});
 
 const checkUrl = (rule: any, value: any, callback: any) => {
   console.log(rule);
@@ -83,7 +147,7 @@ const handleSetting = () => {
 };
 
 const chromePath = ref("");
-const handleBoot = async (row: any) => {
+const handleBoot = async (row: any, pRow:any={}) => {
   const chromeDir = await findOne({
     name: "chromePath",
   });
@@ -93,20 +157,16 @@ const handleBoot = async (row: any) => {
     ElMessage.error("请在基本配置中配置浏览器路径");
     return;
   }
-  // const device: any = await window.electronAPI.getDeviceInfo();
-  // if (device) {
-  //   console.log("device: ", device);
-  //   downloadPath.value = `${device.downloadsPath}/${row.uname}`;
-  //   baseUrl.value = `http://localhost:${device.serverPort}`;
-  // }
   loading.value = true;
 
   const bootParams = {
+    ...pRow,
     ...row,
     chromePath: chromePath.value,
     downloadPath: downloadPath.value,
-    url: row.remark || row.url,
+    url: row.remark || row.url || pRow.remark,
   };
+
   let res = await boot(bootParams);
   console.log("res: ", res);
   if (res) {
@@ -128,6 +188,13 @@ const onSubmit = async (formEl: any) => {
       });
     }
   });
+};
+const tableRowClassName = ({ row, rowIndex }) => {
+  if (!row.bankDataDTO) {
+    return "row-expand-cover";
+  }
+  return ''
+  
 };
 </script>
 
@@ -209,7 +276,51 @@ const onSubmit = async (formEl: any) => {
     <el-divider />
     <h2 style="margin-bottom: 20px">账户列表</h2>
     <div class="card">
-      <el-table :data="tableData" style="width: 100%" size="large">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column type="expand">
+          <template #default="{ row }">
+            <el-table
+              v-if="row.bankType === 24"
+              :data="row.bankDataDTO"
+              class="subtable"
+              style="width: 90%"
+              size="small"
+            >
+              <el-table-column prop="corporateId" label="corporateId">
+              </el-table-column>
+              <el-table-column prop="userId" label="userId"> </el-table-column>
+              <el-table-column prop="password" label="password">
+              </el-table-column>
+              <el-table-column label="类型" width="100">
+                <template #default="scoped">
+                  <el-tag sizsmalle="medium" v-if="scoped.row.type === 'min'"
+                    >最近10笔</el-tag
+                  >
+                  <el-tag size="small" v-if="scoped.row.type === 'all'">全流水</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="操作"
+                header-align="center"
+                align="center"
+              >
+                <template #default="scoped">
+                  <el-button
+                    type="success"
+                    plain
+                    @click="handleBoot(scoped.row,row)"
+                    size="small"
+                    >启动</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
         <el-table-column
           type="index"
           label="#"
@@ -224,12 +335,19 @@ const onSubmit = async (formEl: any) => {
         />
         <el-table-column label="操作" header-align="center" align="center">
           <template #default="{ row }">
-            <el-button type="success" @click="handleBoot(row)">启动</el-button>
+            <el-button
+              type="success"
+              v-if="row.bankType !== 24"
+              @click="handleBoot(row)"
+              >启动</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-button type="primary" style="margin-top: 20px" @click="accounts">刷新</el-button>
+    <el-button type="primary" style="margin-top: 20px" @click="accounts"
+      >刷新</el-button
+    >
 
     <setting-dialog ref="settingDialog" />
   </div>
@@ -255,5 +373,18 @@ const onSubmit = async (formEl: any) => {
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+.subtable {
+  padding-left: 40px;
+}
+
+.row-expand-cover .el-table__expand-icon {
+  visibility: hidden;
+}
+.row-expand-cover .el-table__expand-icon {
+  visibility: hidden;
+}
+:deep(.row-expand-cover .el-table__expand-icon) {
+  visibility: hidden;
 }
 </style>
