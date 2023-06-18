@@ -225,7 +225,7 @@ const handleBoot = async (row: any, pRow: any = {}) => {
   let res = await boot(bootParams);
   console.log("res: ", res);
   if (res) {
-    ElMessage.success(`${row.uname}启动成功`);
+    ElMessage.success(`${row.uname || ''}启动成功`);
     loading.value = false;
   } else {
     ElMessage.error(`${row.uname}: ${res.message}`);

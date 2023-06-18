@@ -55,7 +55,6 @@ const launch = (ctx) => {
         `--start-maximized`,
         `--disable-infobars`,
         "--no-default-browser-check",
-        // `--load-extension=${chromeExtPath}`,
         `--load-extension=${chromeExtPath},${chromeExtPathRightClick}`,
       ];
 
@@ -87,12 +86,27 @@ const launch = (ctx) => {
       // pnb
       if(bankType === 24){
         let title = `${body.index} - ${uname}-${body.userId}`
-        page.on('load',()=>{
+        page.on('load',async ()=>{
+          console.log('onLoad url',page.url());
+
+          const section_Login_pnb = await page.$(".section_Login_pnb"); 
+          if(section_Login_pnb){
+            console.log('退出了');
+            await page.goto(websiteUrl, {
+              timeout: 60000,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await page.reload()
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            Pnb.pnbHandle(page, body)
+            return
+          }
+
           page.evaluate((title) => {
             document.title = title;
           },title);
         })
-        
+
         try {
           await Pnb.pnbHandle(page, body)
           DB.insert({
