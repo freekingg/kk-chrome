@@ -1,6 +1,7 @@
 import axios from "axios";
-let baseURL = location.origin + '/'
-// let baseURL = 'http://localhost:52939' + '/'
+// let baseURL = location.origin + '/'
+let baseURL = process.env.NODE_ENV === "development" ? 'http://localhost:52939' + '/' : location.origin + '/'
+console.log('baseURL: ', baseURL);
 const request = (obj) => {
   return new Promise((resolve, reject) => {
     axios({
