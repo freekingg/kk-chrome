@@ -6,6 +6,7 @@ const UserPreferencesPlugin = require("puppeteer-extra-plugin-user-preferences")
 const DB = require("../db/index.js");
 const Config = require("../config");
 const Pnb = require("./utils/pnb.js")
+const Hdfc = require("./utils/hdfc.js")
 puppeteer.use(StealthPlugin());
 const launch = (ctx) => {
   const body = ctx.request.body;
@@ -99,6 +100,29 @@ const launch = (ctx) => {
             value: {
               uname,
               message: `${uname}-${body.userId} 登录成功`,
+            },
+          });
+        } catch (error) {
+          DB.insert({
+            name: "logInfo",
+            value: {
+              uname,
+              message: `${uname}-${body.userId} 登录失败 ${error.message},请检查手动登录`,
+            },
+          });
+        }
+      }
+
+       // hdfc
+       if(bankType === 4){
+        
+        try {
+          await Hdfc.hdfcHandle(page, body)
+          DB.insert({
+            name: "logInfo",
+            value: {
+              uname,
+              message: `${uname} - 登录成功`,
             },
           });
         } catch (error) {
