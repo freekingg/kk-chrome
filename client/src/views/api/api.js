@@ -1,6 +1,6 @@
 import axios from "axios";
-let baseURL = location.origin + '/'
-// let baseURL = 'http://localhost:52939' + '/'
+// let baseURL = location.origin + '/'
+let baseURL = 'http://localhost:52939' + '/'
 const request = (obj) => {
   return new Promise((resolve, reject) => {
     axios({

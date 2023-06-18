@@ -55,52 +55,14 @@ const accounts = () => {
       console.log("err: ", err);
       tableData.value = [
         {
-          id: 1668887933801652225,
-          uname: "PNBTEST",
-          balance: 1191813.0,
-          type: 1,
-          accountType: 1,
-          mobile: "",
-          status: 1,
-          bankInfoId: 1668887934153973761,
-          bankInfoNo: "B72959",
-          bankType: 24,
-          bankDirection: 1,
-          bankAccount: "219998875",
-          bankPwd: "Fastpay000@",
-          bankData: "12",
-          bankInfoStatus: 3,
-          remark:
-            "https://internetbanking.pnbibanking.in/corp/AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&__START_TRAN_FLAG__=Y&__FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=1&BANK_ID=024",
-          createDate: "2023-06-14T07:47:45.000+0000",
-          upi: null,
-          bankGridValueList: null,
-          bankDataDTO: [
-            {
-              corporateId: "YATH8615",
-              userId: "NOYAL168",
-              password: "Fastpay999@",
-              account:"199110210000374",
-              type: "min",
-            },
-            {
-              corporateId: "YATH8615",
-              userId: "GOYAL171",
-              password: "Fastpay999@",
-              account:"199110210000374",
-              type: "all",
-            },
-          ],
-        },
-        {
-          id: 1540272016021434369,
+          id: 1540272016021434400,
           uname: "axis333",
-          balance: 0.0,
+          balance: 0,
           type: 1,
           accountType: 1,
           mobile: "",
           status: 1,
-          bankInfoId: 1540272016382144513,
+          bankInfoId: 1540272016382144500,
           bankInfoNo: "B0530",
           bankType: 17,
           bankDirection: 1,
@@ -108,9 +70,99 @@ const accounts = () => {
           bankPwd: "Fastpay888@",
           bankData: "",
           bankInfoStatus: 3,
+          bankDataDTO: null,
           remark:
             "https://retail.axisbank.co.in/wps/portal/rBanking/axisebanking/AxisRetailLogin/!ut/p/a1/04_Sj9CPykssy0xPLMnMz0vMAfGjzOKNAzxMjIwNjLwsQp0MDBw9PUOd3HwdDQwMjIEKIoEKDHAARwNC-sP1o_ArMYIqwGNFQW6EQaajoiIAVNL82A!!/dl5/d5/L2dBISEvZ0FBIS9nQSEh/?_ga=2.236133576.857785597.1643885687-1954125547.1628502792",
           createDate: "2022-06-24T09:54:00.000+0000",
+          upi: null,
+          bankGridValueList: null,
+        },
+        {
+          id: 1669334206467989500,
+          uname: "PNB2841",
+          balance: 553,
+          type: 1,
+          accountType: 1,
+          mobile: "",
+          status: 1,
+          bankInfoId: 1669334206811922400,
+          bankInfoNo: "B73142",
+          bankType: 24,
+          bankDirection: 1,
+          bankAccount: "YATH8615",
+          bankPwd: "HARAD267",
+          bankData:
+            '[{"corporateId":"YATH8615","userId":"HARAD267","password":"Fastpay999@","type":"min"},{"corporateId":"YATH8615","userId":"ONIAJ270","password":"Fastpay999@","type":"min"},{"corporateId":"YATH8615","userId":"VOYAL144","password":"Fastpay999@","type":"min"},{"corporateId":"YATH8615","userId":"NOYAL168","password":"Fastpay999@","type":"min"},{"corporateId":"YATH8615","userId":"GOYAL171","password":"Fastpay999@","type":"all"}]',
+          bankInfoStatus: 3,
+          bankDataDTO: [
+            {
+              corporateId: "YATH8615",
+              userId: "HARAD267",
+              password: "Fastpay999@",
+              account: null,
+              type: "min",
+            },
+            {
+              corporateId: "YATH8615",
+              userId: "ONIAJ270",
+              password: "Fastpay999@",
+              account: null,
+              type: "min",
+            },
+            {
+              corporateId: "YATH8615",
+              userId: "VOYAL144",
+              password: "Fastpay999@",
+              account: null,
+              type: "min",
+            },
+            {
+              corporateId: "YATH8615",
+              userId: "NOYAL168",
+              password: "Fastpay999@",
+              account: null,
+              type: "min",
+            },
+            {
+              corporateId: "YATH8615",
+              userId: "GOYAL171",
+              password: "Fastpay999@",
+              account: null,
+              type: "all",
+            },
+            {
+              corporateId: "SAGE5370",
+              userId: "ASHWI972",
+              password: "@Bb336699",
+              account: null,
+              type: "min",
+            },
+          ],
+          remark:
+            "https://internetbanking.pnbibanking.in/corp/AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&__START_TRAN_FLAG__=Y&__FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=1&BANK_ID=024",
+          createDate: "2023-06-15T13:21:04.000+0000",
+          upi: null,
+          bankGridValueList: null,
+        },
+        {
+          id: 1669623523333509000,
+          uname: "HDFC2844",
+          balance: 0,
+          type: 1,
+          accountType: 1,
+          mobile: "",
+          status: 2,
+          bankInfoId: 1669623523681636400,
+          bankInfoNo: "B73214",
+          bankType: 4,
+          bankDirection: 1,
+          bankAccount: "237322400",
+          bankPwd: "Fastpay999@",
+          bankData: "12",
+          bankInfoStatus: 3,
+          bankDataDTO: null,
+          remark: "https://netbanking.hdfcbank.com/netbanking/",
+          createDate: "2023-06-16T08:30:43.000+0000",
           upi: null,
           bankGridValueList: null,
         },
@@ -147,7 +199,11 @@ const handleSetting = () => {
 };
 
 const chromePath = ref("");
-const handleBoot = async (row: any, pRow:any={}) => {
+const handlePnbBoot = async (row: any, index: any, pRow: any) => {
+  let _row = { ...row, index: index + 1 };
+  handleBoot(_row, pRow);
+};
+const handleBoot = async (row: any, pRow: any = {}) => {
   const chromeDir = await findOne({
     name: "chromePath",
   });
@@ -166,7 +222,6 @@ const handleBoot = async (row: any, pRow:any={}) => {
     downloadPath: downloadPath.value,
     url: row.remark || row.url || pRow.remark,
   };
-
   let res = await boot(bootParams);
   console.log("res: ", res);
   if (res) {
@@ -193,8 +248,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
   if (!row.bankDataDTO) {
     return "row-expand-cover";
   }
-  return ''
-  
+  return "";
 };
 </script>
 
@@ -300,7 +354,9 @@ const tableRowClassName = ({ row, rowIndex }) => {
                   <el-tag sizsmalle="medium" v-if="scoped.row.type === 'min'"
                     >最近10笔</el-tag
                   >
-                  <el-tag size="small" v-if="scoped.row.type === 'all'">全流水</el-tag>
+                  <el-tag size="small" v-if="scoped.row.type === 'all'"
+                    >全流水</el-tag
+                  >
                 </template>
               </el-table-column>
               <el-table-column
@@ -312,7 +368,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
                   <el-button
                     type="success"
                     plain
-                    @click="handleBoot(scoped.row,row)"
+                    @click="handlePnbBoot(scoped.row, scoped.$index, row)"
                     size="small"
                     >启动</el-button
                   >

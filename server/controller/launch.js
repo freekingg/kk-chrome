@@ -85,6 +85,12 @@ const launch = (ctx) => {
 
       // pnb
       if(bankType === 24){
+        let title = `${body.index} - ${uname}-${body.userId}`
+        page.on('load',()=>{
+          page.evaluate((title) => {
+            document.title = title;
+          },title);
+        })
         
         try {
           await Pnb.pnbHandle(page, body)
