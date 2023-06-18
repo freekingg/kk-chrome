@@ -4,15 +4,14 @@ const fs = require("fs-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const UserPreferencesPlugin = require("puppeteer-extra-plugin-user-preferences");
 const DB = require("../db/index.js");
-const Config = require("../config");
-const Pnb = require("./utils/pnb.js")
-const Hdfc = require("./utils/hdfc.js")
+const Config = require("../config/index.js");
+const Pnb = require("./utils/pnb.js");
 puppeteer.use(StealthPlugin());
-const launch = (ctx) => {
+
+const laucnPnb = (ctx) => {
   const body = ctx.request.body;
-  console.log('body: ', body);
   let checkBrowserTimer = null;
-  const { uname, url, bankType } = body;
+  const { uname, url } = body;
   const websiteUrl = url;
 
   // 远程目录
@@ -46,10 +45,13 @@ const launch = (ctx) => {
       );
 
       let chromePath = await DB.findOne({ name: "chromePath" });
-      let _chromePath = path.normalize(chromePath?.value || '');
-      console.log('chromePath: ', chromePath);
-      let chromeExtPath = path.join(__dirname,'../chrome-ext/kkExt')
-      let chromeExtPathRightClick = path.join(__dirname,'../chrome-ext/rightClick')
+      let _chromePath = path.normalize(chromePath?.value || "");
+      console.log("chromePath: ", chromePath);
+      let chromeExtPath = path.join(__dirname, "../chrome-ext/kkExt");
+      let chromeExtPathRightClick = path.join(
+        __dirname,
+        "../chrome-ext/rightClick"
+      );
 
       const customArgs = [
         `--start-maximized`,
@@ -84,70 +86,45 @@ const launch = (ctx) => {
       });
 
       // pnb
-      if(bankType === 24){
-        let title = `${body.index} - ${uname}-${body.userId}`
-        page.on('load',async ()=>{
-          console.log('onLoad url',page.url());
+      let title = `${body.index} - ${uname}-${body.userId}`;
+      page.on("load", async () => {
+        console.log("onLoad url", page.url());
 
-          const section_Login_pnb = await page.$(".section_Login_pnb"); 
-          if(section_Login_pnb){
-            console.log('退出了');
-            await page.goto(websiteUrl, {
-              timeout: 60000,
-            });
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await page.reload()
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            Pnb.pnbHandle(page, body)
-            return
-          }
-
-          page.evaluate((title) => {
-            document.title = title;
-          },title);
-        })
-
-        try {
-          await Pnb.pnbHandle(page, body)
-          DB.insert({
-            name: "logInfo",
-            value: {
-              uname,
-              message: `${uname}-${body.userId} 登录成功`,
-            },
+        const section_Login_pnb = await page.$(".section_Login_pnb");
+        if (section_Login_pnb) {
+          console.log("退出了");
+          await page.goto(websiteUrl, {
+            timeout: 60000,
           });
-        } catch (error) {
-          DB.insert({
-            name: "logInfo",
-            value: {
-              uname,
-              message: `${uname}-${body.userId} 登录失败 ${error.message},请检查手动登录`,
-            },
-          });
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await page.reload();
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          Pnb.pnbHandle(page, body);
+          return;
         }
-      }
 
-       // hdfc
-       if(bankType === 4){
-        
-        try {
-          await Hdfc.hdfcHandle(page, body)
-          DB.insert({
-            name: "logInfo",
-            value: {
-              uname,
-              message: `${uname} - 登录成功`,
-            },
-          });
-        } catch (error) {
-          DB.insert({
-            name: "logInfo",
-            value: {
-              uname,
-              message: `${uname}-${body.userId} 登录失败 ${error.message},请检查手动登录`,
-            },
-          });
-        }
+        page.evaluate((title) => {
+          document.title = title;
+        }, title);
+      });
+
+      try {
+        await Pnb.pnbHandle(page, body);
+        DB.insert({
+          name: "logInfo",
+          value: {
+            uname,
+            message: `${uname}-${body.userId} 登录成功`,
+          },
+        });
+      } catch (error) {
+        DB.insert({
+          name: "logInfo",
+          value: {
+            uname,
+            message: `${uname}-${body.userId} 登录失败 ${error.message},请检查手动登录`,
+          },
+        });
       }
 
       // 检查浏览器是否关闭
@@ -200,7 +177,7 @@ const launch = (ctx) => {
       });
       resolve({ code: 0, message: "ok" });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       DB.insert({
         name: "logInfo",
         value: {
@@ -213,4 +190,4 @@ const launch = (ctx) => {
   });
 };
 
-module.exports = { launch };
+module.exports = { laucnPnb };

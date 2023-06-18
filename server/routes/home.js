@@ -2,13 +2,25 @@ const Router = require("koa-router");
 const router = new Router();
 const DB = require("../db/index.js");
 const { launch } = require("../controller/launch");
+const { laucnPnb } = require("../controller/laucnPnb");
+const { laucnHdfc } = require("../controller/laucnHdfc");
 
 router.get("/", (ctx) => {
   ctx.body = "<h1>主页....</h1>";
 });
 
 router.post("/launch", async (ctx) => {
-  const result = await launch(ctx);
+  const body = ctx.request.body;
+  console.log('body: ', body);
+  const { uname, url, bankType } = body;
+
+  let result = {}
+  if(bankType === 24){
+    result = await laucnPnb(ctx);
+  }
+  if(bankType === 4){
+    result = await laucnHdfc(ctx);
+  }
   ctx.body = result;
 });
 
