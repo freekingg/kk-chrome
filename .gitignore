@@ -8,8 +8,9 @@ node_modules
 
 # production
 /build
-/client/dist/*
-
+client/dist/*
+client/dist
+dist
 # misc
 .DS_Store
 .env.local

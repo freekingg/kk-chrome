@@ -6,6 +6,7 @@ const UserPreferencesPlugin = require("puppeteer-extra-plugin-user-preferences")
 const DB = require("../db/index.js");
 const Config = require("../config/index.js");
 const Hdfc = require("./utils/hdfc.js");
+const Utils = require("../utils/index.js");
 puppeteer.use(StealthPlugin());
 const laucnHdfc = (ctx) => {
   const body = ctx.request.body;
@@ -55,6 +56,7 @@ const laucnHdfc = (ctx) => {
       const customArgs = [
         `--start-maximized`,
         `--disable-infobars`,
+        "--multiple-automatic-downloads",
         "--no-default-browser-check",
         `--load-extension=${chromeExtPath},${chromeExtPathRightClick}`,
       ];
@@ -141,6 +143,13 @@ const laucnHdfc = (ctx) => {
                 name: "logInfo",
                 value: { uname, message: `${uname} 的浏览器已关闭` },
               });
+              // 关闭后上报信息
+              Utils.reportInfo({
+                uname,
+                isOpen: 0,
+                innerIp: Utils.getSysLocalIp(),
+                user: Utils.getSysUser(),
+              });
               clearInterval(checkBrowserTimer);
             }
           })
@@ -151,6 +160,13 @@ const laucnHdfc = (ctx) => {
       DB.insert({
         name: "logInfo",
         value: { uname, message: `${uname} 任务浏览器启动成功` },
+      });
+      // 开启成功后上报信息
+      Utils.reportInfo({
+        uname,
+        isOpen: 1,
+        innerIp: Utils.getSysLocalIp(),
+        user: Utils.getSysUser(),
       });
       resolve({ code: 0, message: "ok" });
     } catch (error) {

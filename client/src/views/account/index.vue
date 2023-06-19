@@ -341,13 +341,12 @@ const tableRowClassName = ({ row, rowIndex }) => {
               v-if="row.bankType === 24"
               :data="row.bankDataDTO"
               class="subtable"
-              style="width: 90%"
               size="small"
             >
-              <el-table-column prop="corporateId" label="corporateId">
+              <el-table-column prop="corporateId" label="corporateId"  width="150">
               </el-table-column>
-              <el-table-column prop="userId" label="userId"> </el-table-column>
-              <el-table-column prop="password" label="password">
+              <el-table-column prop="userId" label="userId"  width="150"> </el-table-column>
+              <el-table-column prop="password" label="password"  width="150">
               </el-table-column>
               <el-table-column label="类型" width="100">
                 <template #default="scoped">
@@ -363,6 +362,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
                 label="操作"
                 header-align="center"
                 align="center"
+                width="100"
               >
                 <template #default="scoped">
                   <el-button
@@ -385,7 +385,19 @@ const tableRowClassName = ({ row, rowIndex }) => {
         />
         <el-table-column
           prop="uname"
-          label="账户名"
+          label="户名"
+          header-align="center"
+          align="center"
+        />
+        <el-table-column
+          prop="bankAccount"
+          label="账号"
+          header-align="center"
+          align="center"
+        />
+        <el-table-column
+          prop="bankPwd"
+          label="密码"
           header-align="center"
           align="center"
         />

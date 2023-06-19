@@ -5,10 +5,11 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 const UserPreferencesPlugin = require("puppeteer-extra-plugin-user-preferences");
 const DB = require("../db/index.js");
 const Config = require("../config/index.js");
+const Utils = require("../utils/index.js");
 puppeteer.use(StealthPlugin());
 const launch = (ctx) => {
   const body = ctx.request.body;
-  console.log('body: ', body);
+  console.log("body: ", body);
   let checkBrowserTimer = null;
   const { uname, url, bankType } = body;
   const websiteUrl = url;
@@ -44,14 +45,18 @@ const launch = (ctx) => {
       );
 
       let chromePath = await DB.findOne({ name: "chromePath" });
-      let _chromePath = path.normalize(chromePath?.value || '');
-      console.log('chromePath: ', chromePath);
-      let chromeExtPath = path.join(__dirname,'../chrome-ext/kkExt')
-      let chromeExtPathRightClick = path.join(__dirname,'../chrome-ext/rightClick')
+      let _chromePath = path.normalize(chromePath?.value || "");
+      console.log("chromePath: ", chromePath);
+      let chromeExtPath = path.join(__dirname, "../chrome-ext/kkExt");
+      let chromeExtPathRightClick = path.join(
+        __dirname,
+        "../chrome-ext/rightClick"
+      );
 
       const customArgs = [
         `--start-maximized`,
         `--disable-infobars`,
+        "--multiple-automatic-downloads",
         "--no-default-browser-check",
         `--load-extension=${chromeExtPath},${chromeExtPathRightClick}`,
       ];
@@ -118,6 +123,13 @@ const launch = (ctx) => {
                 name: "logInfo",
                 value: { uname, message: `${uname} 的浏览器已关闭` },
               });
+              // 关闭后上报信息
+              Utils.reportInfo({
+                uname,
+                isOpen: 0,
+                innerIp: Utils.getSysLocalIp(),
+                user: Utils.getSysUser(),
+              });
               clearInterval(checkBrowserTimer);
             }
           })
@@ -129,9 +141,16 @@ const launch = (ctx) => {
         name: "logInfo",
         value: { uname, message: `${uname} 任务浏览器启动成功` },
       });
+      // 开启成功后上报信息
+      Utils.reportInfo({
+        uname,
+        isOpen: 1,
+        innerIp: Utils.getSysLocalIp(),
+        user: Utils.getSysUser(),
+      });
       resolve({ code: 0, message: "ok" });
     } catch (error) {
-      console.log('error: ', error);
+      console.log("error: ", error);
       DB.insert({
         name: "logInfo",
         value: {
