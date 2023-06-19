@@ -17,9 +17,10 @@ router.post("/launch", async (ctx) => {
   let result = {}
   if(bankType === 24){
     result = await laucnPnb(ctx);
-  }
-  if(bankType === 4){
+  }else if(bankType === 4){
     result = await laucnHdfc(ctx);
+  }else {
+    result = await launch(ctx);
   }
   ctx.body = result;
 });
