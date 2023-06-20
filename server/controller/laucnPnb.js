@@ -95,13 +95,26 @@ const laucnPnb = (ctx) => {
         const section_Login_pnb = await page.$(".section_Login_pnb");
         if (section_Login_pnb) {
           console.log("退出了");
-          await page.goto(websiteUrl, {
-            timeout: 60000,
-          });
+          try {
+            await page.goto(websiteUrl, {
+              timeout: 60000,
+            });
+          } catch (error) {
+            console.log("error: ", error);
+            return
+          }
           await new Promise((resolve) => setTimeout(resolve, 1000));
-          await page.reload();
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          Pnb.pnbHandle(page, body);
+          try {
+            await page.reload();
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            try {
+              Pnb.pnbHandle(page, body);
+            } catch (error) {
+              console.log("error: ", error);
+            }
+          } catch (error) {
+            console.log("error: ", error);
+          }
           return;
         }
 

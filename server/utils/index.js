@@ -52,7 +52,7 @@ const reportInfo = (data = {}) => {
     data,
   })
     .then((result) => {
-      console.log("reportInfo success", result, data);
+      console.log("reportInfo success");
     })
     .catch((err) => {
       console.log('reportInfo err', data);

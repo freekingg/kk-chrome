@@ -26,6 +26,7 @@ const pnbHandle = (page, body = {}) => {
         "#STU_VALIDATE_CREDENTIALS"
       );
       if (submitButton) {
+       try {
         await submitButton.click();
         await page.waitForNavigation({
           waitUntil: "networkidle2",
@@ -38,6 +39,9 @@ const pnbHandle = (page, body = {}) => {
           'input[name="AuthenticationFG.ACCESS_CODE"]',
           body.password
         );
+       } catch (error) {
+        console.log('error: ', error);
+       }
 
         // 监听 alert 弹窗
         page.once("dialog", async (dialog) => {
@@ -129,7 +133,11 @@ const pnbHandle = (page, body = {}) => {
 
           // await page.waitForNavigation({waitUntil:'networkidle2',timeou:60000});
         });
-        await page.click('input[name="Action.VALIDATE_STU_CREDENTIALS"]');
+        try {
+          await page.click('input[name="Action.VALIDATE_STU_CREDENTIALS"]');
+        } catch (error) {
+          console.log('error: ', error);
+        }
       }
     } catch (error) {
       console.log("error:11111 ", error);

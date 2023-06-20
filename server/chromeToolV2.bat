@@ -1,4 +1,3 @@
-@REM @echo off
-echo 'chrome 工具已启动'
-cd /d D:\ChromeToolV2\server
-node app.js
+
+@echo off
+start cmd /k "cd /d D:\ChromeToolV2\server && node app.js"
