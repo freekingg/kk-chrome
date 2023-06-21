@@ -46,7 +46,11 @@ const pnbHandle = (page, body = {}) => {
         // 监听 alert 弹窗
         page.once("dialog", async (dialog) => {
           console.log(dialog.message()); // 打印 alert 内容
-          await dialog.accept(); // 点击确定按钮
+          try {
+            await dialog.accept(); // 点击确定按钮
+          } catch (error) {
+            console.log('dialog accept error: ', error);
+          }
           await new Promise((resolve) => setTimeout(resolve, 2000));
 
           let checkoutLoginTimer = null;
@@ -79,7 +83,7 @@ const pnbHandle = (page, body = {}) => {
 
             console.log(page.url());
             if (page.url().toLowerCase().includes("Finacle?bwayparam") || shortCuts_Account_Summary) {
-              console.log("登录成功");
+              console.log("login success");
               clearInterval(checkoutLoginTimer);
               if (body.type === "min") {
                 try {
@@ -87,11 +91,15 @@ const pnbHandle = (page, body = {}) => {
                     'a[id="My-ShortCuts_Account-Summary"]'
                   );
                   if (ShortCuts_Account_Summary) {
-                    await ShortCuts_Account_Summary.click();
-                    await page.waitForNavigation({
-                      waitUntil: "networkidle2",
-                      timeou: 60000,
-                    });
+                    try {
+                      await ShortCuts_Account_Summary.click();
+                      await page.waitForNavigation({
+                        waitUntil: "networkidle2",
+                        timeou: 60000,
+                      });
+                    } catch (error) {
+                      console.log('ShortCuts_Account_Summary error: ', error);
+                    }
                     resolve();
                   }
                 } catch (error) {
@@ -106,11 +114,15 @@ const pnbHandle = (page, body = {}) => {
                       'a[id="My-ShortCuts_Account-Statement"]'
                     );
                   if (ShortCuts_Account_Statement) {
-                    await ShortCuts_Account_Statement.click();
-                    await page.waitForNavigation({
-                      waitUntil: "networkidle2",
-                      timeou: 60000,
-                    });
+                    try {
+                      await ShortCuts_Account_Statement.click();
+                      await page.waitForNavigation({
+                        waitUntil: "networkidle2",
+                        timeou: 60000,
+                      });
+                    } catch (error) {
+                      console.log('all ShortCuts_Account_Summary error: ', error);
+                    }
                     resolve();
                   }
                 } catch (error) {
