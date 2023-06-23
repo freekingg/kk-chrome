@@ -90,11 +90,15 @@ const laucnPnb = (ctx) => {
       // pnb
       let title = `${body.index} - ${uname}-${body.userId}`;
       page.on("load", async () => {
-        console.log("onLoad url", page.url());
-
-        const section_Login_pnb = await page.$(".section_Login_pnb");
+        let section_Login_pnb = null
+        try {
+          section_Login_pnb = await page.$(".section_Login_pnb");
+        } catch (error) {
+          console.log('logouted error: ', error);
+          return
+        }
         if (section_Login_pnb) {
-          console.log("logout");
+          console.log("logouted");
           try {
             await page.goto(websiteUrl, {
               timeout: 60000,
@@ -103,16 +107,18 @@ const laucnPnb = (ctx) => {
             console.log("error: ", error);
             return
           }
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 3000));
           try {
-            await page.reload();
+            await page.reload({
+              waitUntil: "networkidle2",
+              timeou: 60000,
+            });
             await new Promise((resolve) => setTimeout(resolve, 3000));
             try {
               Pnb.pnbHandle(page, body).then((result) => {
                 console.log('Re Login success: ', result);
               }).catch((err) => {
                 console.log('Re Login Error: ', err);
-                
               });
             } catch (error) {
               console.log("error: ", error);
@@ -138,6 +144,7 @@ const laucnPnb = (ctx) => {
           },
         });
       } catch (error) {
+        console.log('error: ', error);
         DB.insert({
           name: "logInfo",
           value: {
