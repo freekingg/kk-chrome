@@ -88,6 +88,7 @@ const pnbHandle = (page, body = {}) => {
             } catch (error) {
               console.log("errorlink error: ", error);
               clearInterval(checkoutLoginTimer);
+              return;
             }
 
             let shortCuts_Account_Summary = null;
@@ -157,7 +158,7 @@ const pnbHandle = (page, body = {}) => {
                 }
               }
             }
-          }, 1000);
+          }, 2000);
         });
         try {
           await page.click('input[name="Action.VALIDATE_STU_CREDENTIALS"]');
