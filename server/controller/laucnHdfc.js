@@ -85,7 +85,7 @@ const laucnHdfc = (ctx) => {
         waitUntil: "networkidle2",
         timeout: 60000,
       });
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // hdfc
       try {
