@@ -48,7 +48,7 @@ const getSysPublicIp = () => {
 const reportInfo = (data = {}) => {
   axios({
     method: "post",
-    url: "http://localhost:81/admin/crawler/pluginCrawler",
+    url: "http://localhost/admin/crawler/pluginCrawler",
     data,
   })
     .then((result) => {
