@@ -46,16 +46,17 @@ const getSysPublicIp = () => {
 
 // 上报信息
 const reportInfo = (data = {}) => {
+  let url = "http://localhost/admin/crawler/pluginCrawler";
   axios({
     method: "post",
-    url: "http://localhost/admin/crawler/pluginCrawler",
+    url,
     data,
   })
     .then((result) => {
-      console.log("reportInfo success");
+      console.log("reportInfo success", data, url);
     })
     .catch((err) => {
-      console.log('reportInfo err', data);
+      console.log("reportInfo err", data, url);
       console.log("reportInfo err", err.message);
     });
 };
@@ -64,5 +65,5 @@ module.exports = {
   getSysUser,
   getSysLocalIp,
   getSysPublicIp,
-  reportInfo
+  reportInfo,
 };
