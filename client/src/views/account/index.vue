@@ -46,7 +46,6 @@ const accounts = () => {
     url: baseUrl.value,
   })
     .then((result) => {
-      console.log(result);
       if (result.data) {
         tableData.value = result.data;
       }
@@ -56,7 +55,7 @@ const accounts = () => {
       // tableData.value = [
       //   {
       //     id: 1669334206467989500,
-      //     uname: "STAR3981",
+      //     uname: "PNBTESR",
       //     balance: 553,
       //     type: 1,
       //     accountType: 1,
@@ -64,7 +63,7 @@ const accounts = () => {
       //     status: 1,
       //     bankInfoId: 1669334206811922400,
       //     bankInfoNo: "B73142",
-      //     bankType: 24,
+      //     bankType: 2004,
       //     bankDirection: 1,
       //     bankAccount: "YATH8615",
       //     bankPwd: "HARAD267",
@@ -73,46 +72,46 @@ const accounts = () => {
       //     bankInfoStatus: 3,
       //     bankDataDTO: [
       //       {
-      //         corporateId: "ASHI7486",
-      //         userId: "SHAIK775",
-      //         password: "Fastpay4321@",
-      //         account: null,
+      //         corporateId: "JAIM3094",
+      //         userId: "ROHIT379",
+      //         password: "Fastpay222@",
+      //         account: "",
       //         type: "min",
       //       },
       //       {
-      //         corporateId: "ASHI7486",
-      //         userId: "SURAW781",
-      //         password: "Fastpay4321@",
-      //         account: null,
+      //         corporateId: "JAIM3094",
+      //         userId: "BAATT940",
+      //         password: "Fastpay222@",
+      //         account: "",
       //         type: "min",
       //       },
       //       {
-      //         corporateId: "STAR3981",
-      //         userId: "CONSU907",
-      //         password: "Fastpay444@",
-      //         account: null,
+      //         corporateId: "JAIM3094",
+      //         userId: "DEEKK965",
+      //         password: "Fastpay222@",
+      //         account: "",
       //         type: "min",
       //       },
       //       {
-      //         corporateId: "STAR3981",
-      //         userId: "NOYAL168",
-      //         password: "Fastpay999@",
-      //         account: null,
+      //         corporateId: "JAIM3094",
+      //         userId: "FAABB960",
+      //         password: "Fastpay222@",
+      //         account: "",
       //         type: "min",
       //       },
       //       {
-      //         corporateId: "YATH8615",
-      //         userId: "GOYAL171",
-      //         password: "Fastpay999@",
-      //         account: null,
+      //         corporateId: "JAIM3094",
+      //         userId: "HOOPP917",
+      //         password: "Fastpay222@",
+      //         account: "",
       //         type: "all",
       //       },
       //       {
-      //         corporateId: "SAGE5370",
-      //         userId: "ASHWI972",
-      //         password: "@Bb336699",
-      //         account: null,
-      //         type: "min",
+      //         corporateId: "JAIM3094",
+      //         userId: "JAAGG958",
+      //         password: "Fastpay222@",
+      //         account: "",
+      //         type: "all",
       //       },
       //     ],
       //     remark:
@@ -144,8 +143,6 @@ const accounts = () => {
       //     bankGridValueList: null,
       //   },
       // ];
-   
-   
     });
 };
 
@@ -154,7 +151,6 @@ onMounted(() => {
 });
 
 const checkUrl = (rule: any, value: any, callback: any) => {
-  console.log(rule);
   if (value === "") {
     callback(new Error("请输入要打开的网址"));
   } else {
@@ -173,7 +169,6 @@ const rules = reactive({
 
 const settingDialog = ref();
 const handleSetting = () => {
-  console.log(settingDialog.value);
   settingDialog.value.handleVisible(true);
 };
 
@@ -183,6 +178,7 @@ const handlePnbBoot = async (row: any, index: any, pRow: any) => {
   handleBoot(_row, pRow);
 };
 const handleBoot = async (row: any, pRow: any = {}) => {
+
   const chromeDir = await findOne({
     name: "chromePath",
   });
@@ -193,7 +189,6 @@ const handleBoot = async (row: any, pRow: any = {}) => {
     return;
   }
   loading.value = true;
-
   const bootParams = {
     ...pRow,
     ...row,
@@ -201,14 +196,18 @@ const handleBoot = async (row: any, pRow: any = {}) => {
     downloadPath: downloadPath.value,
     url: row.remark || row.url || pRow.remark,
   };
-  let res = await boot(bootParams);
-  console.log("res: ", res);
-  if (res) {
-    ElMessage.success(`${row.uname || ''}启动成功`);
-    loading.value = false;
-  } else {
-    ElMessage.error(`${row.uname}: ${res.message}`);
-    loading.value = false;
+  try {
+    let res = await boot(bootParams);
+    if (res) {
+      ElMessage.success(`${row.uname || ""}启动成功`);
+      loading.value = false;
+    } else {
+      ElMessage.error(`${row.uname}: ${res.message}`);
+      loading.value = false;
+    }
+  } catch (error) {
+    console.log('error: ', error);
+    ElMessage.error(`${error.message}`);
   }
 };
 
@@ -233,7 +232,7 @@ const tableRowClassName = ({ row, rowIndex }) => {
 
 <template>
   <div class="account">
-    <div class="other">
+    <!-- <div class="other">
       <h4 style="margin-top: 15px; margin-bottom: 23px; text-align: center">
         手动运行
       </h4>
@@ -274,7 +273,6 @@ const tableRowClassName = ({ row, rowIndex }) => {
               :value="item"
             />
           </el-select>
-          <!-- <el-input v-model="formInline.url" clearable placeholder="请输入要打开的网址" /> -->
         </el-form-item>
         <el-form-item>
           <el-button
@@ -297,16 +295,16 @@ const tableRowClassName = ({ row, rowIndex }) => {
           </el-tooltip>
         </el-form-item>
       </el-form>
-    </div>
-    <el-alert
+    </div> -->
+    <!-- <el-alert
       show-icon
-      title="账户名"
-      description="请核对好与后台的户名一致,不可出错."
-      type="info"
+      title="提示"
+      description="不要重复打开多个Chrome Tool,不"
+      type="warning"
       :closable="false"
       style="margin-bottom: 3px"
-    />
-    <el-divider />
+    /> -->
+    <!-- <el-divider /> -->
     <h2 style="margin-bottom: 20px">账户列表</h2>
     <div class="card">
       <el-table
@@ -317,15 +315,20 @@ const tableRowClassName = ({ row, rowIndex }) => {
         <el-table-column type="expand">
           <template #default="{ row }">
             <el-table
-              v-if="row.bankType === 24"
+              v-if="row.bankType === 2004"
               :data="row.bankDataDTO"
               class="subtable"
               size="small"
             >
-              <el-table-column prop="corporateId" label="corporateId"  width="150">
+              <el-table-column
+                prop="corporateId"
+                label="corporateId"
+                width="150"
+              >
               </el-table-column>
-              <el-table-column prop="userId" label="userId"  width="150"> </el-table-column>
-              <el-table-column prop="password" label="password"  width="150">
+              <el-table-column prop="userId" label="userId" width="150">
+              </el-table-column>
+              <el-table-column prop="password" label="password" width="150">
               </el-table-column>
               <el-table-column label="类型" width="100">
                 <template #default="scoped">
